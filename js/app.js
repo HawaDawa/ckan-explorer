@@ -194,9 +194,10 @@ templateDataset: ' \
     if (e) {
       e.preventDefault();
     }
-    this.currentQuery = this.$('form input[type="search"]').val();
-    ckan.action('current_package_list_with_resources', {q: this.currentQuery}, function(err, out) {
-      _.each(out.result, function(dataset) {
+    this.currentQuery = $('form input[type="search"]').val();
+    ckan.action('package_search', {include_private: true, q: this.currentQuery}, function(err, out) {
+     var subkey = "results"; 
+     _.each(out.result[subkey], function(dataset) {
         // should have datastore_active set but unfortunately not ...
         // see https://raw.github.com/datasets/gold-prices/master/data/data.csv
         _.each(dataset.resources, function(res) {
@@ -208,7 +209,7 @@ templateDataset: ' \
           }
         });
       });
-      self.collection.reset(out.result);
+      self.collection.reset(out.result[subkey]);
       if (startDataset) {
         self.trigger('resource:select', startDataset);
       }
@@ -225,7 +226,7 @@ jQuery(document).ready(function($) {
   var $el = $('.dataset-search-here');
   // support for using query string state
   var qs = parseQueryString(location.search);
-  var endpoint = qs.endpoint || 'http://demo.ckan.org';
+  var endpoint = 'https://smartlane.io';
   var apikey = qs.apikey || '';
   if (!endpoint.match(/api$/)) {
     endpoint += '/api'
