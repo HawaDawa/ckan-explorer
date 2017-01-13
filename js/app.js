@@ -30,9 +30,9 @@ var DataView = Backbone.View.extend({
     });
     this.$el.html(html);
     this.view = this._makeMultiView(this.dataset, this.$el.find('.multiview'));
-    this.dataset.query({
+    /*this.dataset.query({
       size: this.dataset.recordCount
-    });
+    });*/
   },
   _makeMultiView: function(dataset, $el) {
     var gridView = {
