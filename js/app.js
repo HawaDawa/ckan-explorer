@@ -28,10 +28,11 @@ var DataView = Backbone.View.extend({
   render: function() {
     var html = Mustache.render(this.template, {
       resource: this.dataset.toJSON(),
-      sql: querysql
+      sql: querysql || "SELECT * FROM \"" + resource.id + "\"
     });
     this.$el.html(html);
     this.view = this._makeMultiView(this.dataset, this.$el.find('.multiview'));
+    if (querysql) this.sqlQuery(null);
     /*this.dataset.query({
       size: this.dataset.recordCount
     });*/
@@ -231,9 +232,7 @@ jQuery(document).ready(function($) {
   var qs = parseQueryString(location.search);
   var endpoint = qs.endpoint || '//demo.ckan.org';
   var apikey = qs.apikey || '';
-  querysql = qs.query; 
-console.log(querysql);  
-$("#sqlbox").val(querysql);
+
   if (!endpoint.match(/api$/)) {
     endpoint += '/api'
   }
@@ -241,6 +240,9 @@ $("#sqlbox").val(querysql);
   ckan = new CKAN.Client(endpoint, apikey)
   if (qs.dataset) {
     startDataset = qs.dataset;
+  }
+  if (qs.query) {
+    querysql = qs.query;
   }
   var search = new CKANSearchWidget({
     el: $el
