@@ -26,13 +26,14 @@ var DataView = Backbone.View.extend({
     //    });
   },
   render: function() {
+    var resource = this.dataset.toJSON();
     var html = Mustache.render(this.template, {
-      resource: this.dataset.toJSON(),
-      sql: querysql || "SELECT * FROM \"" + resource.id + "\"
+      resource: resource,
+      sql: querysql || "SELECT * FROM \"" + resource.id + "\""
     });
     this.$el.html(html);
     this.view = this._makeMultiView(this.dataset, this.$el.find('.multiview'));
-    if (querysql) this.sqlQuery(null);
+    if (querysql) jQuery('.query-sql').submit();
     /*this.dataset.query({
       size: this.dataset.recordCount
     });*/
