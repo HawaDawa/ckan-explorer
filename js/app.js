@@ -2,7 +2,12 @@
 // will be setup in document ready below as we need to parse query string
 var ckan = null;
 var querysql = "";
+var viewtype = "grid";
+var group = null;
+var series = null;
 var startDataset = null;
+var intId;
+
 var DataView = Backbone.View.extend({
   class: 'data-view',
   initialize: function(options) {
@@ -25,6 +30,9 @@ var DataView = Backbone.View.extend({
     //        return;
     //      };
     //    });
+    
+    
+    
   },
   render: function() {
     var resource = this.dataset.toJSON();
@@ -34,7 +42,27 @@ var DataView = Backbone.View.extend({
     });
     this.$el.html(html);
     this.view = this._makeMultiView(this.dataset, this.$el.find('.multiview'));
-    if (querysql) jQuery('.query-sql').submit();
+
+    //TODO: Remove. Nasty.
+    function intervalTrigger() {
+      return window.setInterval(function () {
+        console.log(viewtype);
+        if (viewtype == "graph") {
+          jQuery("[href='#graph']").click();
+        }
+        if (group) jQuery("#field-form-group").val(group);
+        if (series) {
+          jQuery("#form-field-A").val(series);
+          jQuery("#form-field-A").change();
+        }
+        window.clearInterval(intId);
+      }, 1000);
+    }
+    
+    if (querysql) {
+      jQuery('.query-sql').submit();
+      intId = intervalTrigger(); 
+    }
     /*this.dataset.query({
       size: this.dataset.recordCount
     });*/
@@ -245,6 +273,15 @@ jQuery(document).ready(function($) {
   }
   if (qs.query) {
     querysql = qs.query;
+  }
+  if (qs.view) {
+    viewtype = qs.view;
+  }
+  if (qs.group) {
+    group = qs.group;
+  }
+  if (qs.series) {
+    series= qs.series;
   }
   var search = new CKANSearchWidget({
     el: $el
