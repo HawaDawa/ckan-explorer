@@ -57,11 +57,17 @@
                 This application let's you explore, analyze and visualize data stored in a CKAN DataStore.
               </small>
             </h1>
+            <h3>Setup</h3>
+            <p>If you haven't already done so, add a URL argument "endpoint" in the address bar to the CKAN 
+            instance you want to access. E.g. <a href="./?endpoint=//beta.ckan.org/api">http://APPADDRESS/?endpoint=//beta.ckan.org/api</a>. Note: the use of http or https (SSL) must be the same as that of what you are using to view the app, hence the lack of a protocol in the example link provided. The CKAN must have the <a href="http://docs.ckan.org/en/latest/maintaining/datastore.html">Datastore</a> set up and working (non-legacy version).</p>
             <h3>Get Started</h3>
-            <p>Search for data to add in the sidebar. This will display datases
+            <p>Search for data to add in the sidebar. This will display datasets
             along with their data resources. If the data resource has data stored
             in the DataStore you'll then be able to view it by clicking on
-            it.</p>
+            it. Please note that while you can supply an "apikey" argument in the URL to see
+            private datasets, 
+            CKAN instances do not usually support SQL search queries (upon which this app
+            heavily relies) on private data sets for security reasons.</p>
           </div>
           <div class="data-views-container"></div>
         </div>
